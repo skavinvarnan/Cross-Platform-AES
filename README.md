@@ -75,6 +75,11 @@ try {
 ```
 
 ### Javascript / NodeJS / Web
+Download the library
+```shell
+npm install cryptlib --save
+```
+
 ```javascript
 var plainText = "this is my plain text";
 var key = "simplekey";
