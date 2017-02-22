@@ -24,6 +24,10 @@ Complex logics such as generating IV and sha256 the key are done within the libr
 Pass in the plainText as String, Pass in the key as String, Pass in the IV as String. Both the encrypted and decrypted data are also String. <b> key is converted to 256-bit </b>within the library for Android and iOS
 
 ### iOS / Swift 3
+Add a bridging header. [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html)
+```objc
+#import "CryptLib.h"
+```
 ```swift
 let plainText = "this is my plain text"
 let key = "simplekey"
