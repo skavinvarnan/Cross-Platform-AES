@@ -123,12 +123,25 @@
     return nil;
 }
 
-- (NSString *) encryptPlainTextWith:(NSString *)plainText key:(NSString *)key iv:(NSString *)iv {
+- (NSString *) encryptPlainText:(NSString *)plainText key:(NSString *)key iv:(NSString *)iv {
     return [[[[CryptLib alloc] init] encrypt:[plainText dataUsingEncoding:NSUTF8StringEncoding] key:[[CryptLib alloc] sha256:key length:32] iv:iv] base64EncodedStringWithOptions:0];
 }
 
-- (NSString *) decryptCipherTextWith:(NSString *)ciperText key:(NSString *)key iv:(NSString *)iv {
-    return [[NSString alloc] initWithData:[[CryptLib alloc] decrypt:[[NSData alloc] initWithBase64EncodedString:ciperText options:NSDataBase64DecodingIgnoreUnknownCharacters] key:[[CryptLib alloc] sha256:key length:32] iv:iv] encoding:NSUTF8StringEncoding];
+- (NSString *) decryptCipherText:(NSString *)ciperText key:(NSString *)key iv:(NSString *)iv {
+    return [[NSString alloc] initWithData:[[CryptLib alloc] decrypt:[[NSData alloc] initWithBase64EncodedString:ciperText options:NSDataBase64DecodingIgnoreUnknownCharacters] key:[[CryptLib alloc] sha256:key length:32] iv:[[CryptLib alloc] generateRandomIV16]] encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *) encryptPlainTextRandomIVWithPlainText:(NSString *)plainText key:(NSString *)key {
+    CryptLib *crypt = [CryptLib alloc];
+    NSString *plain = [crypt generateRandomIV16];
+    plain = [plain stringByAppendingString:plainText];
+    return [[[crypt init] encrypt:[plain dataUsingEncoding:NSUTF8StringEncoding] key:[crypt sha256:key length:32] iv:[crypt generateRandomIV16]] base64EncodedStringWithOptions:0];
+}
+
+- (NSString *) decryptCipherTextRandomIVWithCipherText:(NSString *)cipherText key:(NSString *)key {
+    CryptLib *crypt = [CryptLib alloc];
+    NSString *plain = [[NSString alloc] initWithData:[crypt decrypt:[[NSData alloc] initWithBase64EncodedString:cipherText options:NSDataBase64DecodingIgnoreUnknownCharacters] key:[crypt sha256:key length:32] iv:[crypt generateRandomIV16]] encoding:NSUTF8StringEncoding];
+    return [plain substringFromIndex:16];
 }
 
 
@@ -161,6 +174,23 @@
     NSAssert(result == 0, @"Error generating random bytes: %d", errno);
     
     NSString *base64EncodedData = [[data base64EncodedStringWithOptions:0] substringToIndex:length];
+    
+    return base64EncodedData;
+}
+
+- (NSString*)generateRandomIV16 {
+    
+    // Since the length of Base64 hash is = (3/4) x (length of input string) we can work out input length required to
+    // generate 32byte hash is 24 bytes long. Note: Base64 may pad end with one, two or no '=' chars if not divisible.
+    // Therefore we don't care the generated string will be too long, just trim it down before returning.
+    
+    NSMutableData *data = [NSMutableData dataWithLength:16];
+    
+    int result = SecRandomCopyBytes(NULL, 16, data.mutableBytes);
+    
+    NSAssert(result == 0, @"Error generating random bytes: %d", errno);
+    
+    NSString *base64EncodedData = [[data base64EncodedStringWithOptions:0] substringToIndex:16];
     
     return base64EncodedData;
 }

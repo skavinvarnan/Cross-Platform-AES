@@ -30,15 +30,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let plainText = "this is my plain text"
-        let key = "simplekey"
-        let iv = "1234123412341234"
+        let key = "your key"
         
-        let cryptoLib = CryptLib();
+        let cryptLib = CryptLib()
         
-        let encryptedString = cryptoLib.encryptPlainText(with: plainText, key: key, iv: iv)
-        print("encryptedString \(encryptedString! as String)")
+        let cipherText = cryptLib.encryptPlainTextRandomIV(withPlainText: plainText, key: key)
+        print("cipherText \(cipherText! as String)")
         
-        let decryptedString = cryptoLib.decryptCipherText(with: encryptedString, key: key, iv: iv)
+        let decryptedString = cryptLib.decryptCipherTextRandomIV(withCipherText: cipherText, key: key)
         print("decryptedString \(decryptedString! as String)")
 
     }

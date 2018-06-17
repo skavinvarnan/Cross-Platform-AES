@@ -22,18 +22,15 @@
  * SOFTWARE.
  */
 
-var plainText = "this is my plain text";
-var key = "simplekey";
-var iv = "1234123412341234";
+const plainText = "this is my plain text";
+const key = "your key";
 
-var cryptoLib = require('cryptlib');
+const cryptLib = require('@skavinvarnan/cryptlib');
 
-shaKey = cryptoLib.getHashSha256(key, 32); // This line is not needed on Android or iOS. Its already built into CryptLib.m and CryptLib.java
+const cipherText = cryptLib.encryptPlainTextWithRandomIV(plainText, key);
+console.log('cipherText %s', cipherText);
 
-var encryptedString = cryptoLib.encrypt(plainText, shaKey, iv);
-console.log('encryptedString %s', encryptedString);
-
-var decryptedString = cryptoLib.decrypt(encryptedString, shaKey, iv);
+const decryptedString = cryptLib.decryptCipherTextWithRandomIV(cipherText, key);
 console.log('decryptedString %s', decryptedString);
 
 

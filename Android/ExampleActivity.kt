@@ -1,3 +1,7 @@
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import android.R.attr.key
+
 /*
  * MIT License
  *
@@ -22,29 +26,22 @@
  * SOFTWARE.
  */
 
-#import "ViewController.h"
-#import "CryptLib.h"
+class MainActivity : AppCompatActivity() {
 
-@interface ViewController ()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-@end
+        val plainText = "this is my plain text"
+        val key = "your key"
 
-@implementation ViewController
+        val cryptLib = CryptLib()
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    NSString *plainText = @"this is my plain text";
-    NSString *key = @"simplekey";
-    NSString *iv = @"1234123412341234";
-    
-    CryptLib *cryptoLib = [[CryptLib alloc] init];
-    
-    NSString *encryptedString = [cryptoLib encryptPlainTextWith:plainText key:key iv:iv];
-    NSLog(@"encryptedString %@", encryptedString);
-    
-    NSString *decryptedString = [cryptoLib decryptCipherTextWith:encryptedString key:key iv:iv];
-    NSLog(@"decryptedString %@", decryptedString);
+        val cipherText = cryptLib.encryptPlainTextWithRandomIV(plainText, key)
+        println("cipherText $cipherText")
+
+        val decryptedString = cryptLib.decryptCipherTextWithRandomIV(cipherText, key)
+        println("decryptedString $decryptedString")
+        
+    }
 }
-
-@end

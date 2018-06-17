@@ -34,7 +34,9 @@
 -  (NSData *)generateRandomIV:(size_t)length;
 -  (NSString *) md5:(NSString *) input;
 -  (NSString *) sha256:(NSString *)key length:(NSInteger) length;
--  (NSString *) encryptPlainTextWith:(NSString *)plainText key:(NSString *)key iv:(NSString *)iv;
--  (NSString *) decryptCipherTextWith:(NSString *)cipherText key:(NSString *)key iv:(NSString *)iv;
+-  (NSString *) encryptPlainText:(NSString *)plainText key:(NSString *)key iv:(NSString *)iv;
+-  (NSString *) decryptCipherText:(NSString *)cipherText key:(NSString *)key iv:(NSString *)iv;
+-  (NSString *) encryptPlainTextRandomIVWithPlainText:(NSString *)plainText key:(NSString *)key;
+-  (NSString *) decryptCipherTextRandomIVWithCipherText:(NSString *)cipherText key:(NSString *)key;
 
 @end
