@@ -77,6 +77,25 @@ const decryptedString = cryptLib.decryptCipherTextWithRandomIV(cipherText, key);
 console.log('decryptedString %s', decryptedString);
 ```
 
+### PHP
+Download the package
+```shell
+composer require ahsankhatri/cryptolib-php
+```
+
+```php
+$string     = 'this is my plain text';
+$secretyKey = 'BlVssQKxzAHFAUNZbqvwS+yKw/m';
+
+$encryption = new \MrShan0\CryptoLib\CryptoLib();
+
+$cipher  = $encryption->encryptPlainTextWithRandomIV($string, $secretyKey);
+echo 'encryptedString: ' . $cipher . PHP_EOL;
+
+$plainText = $encryption->decryptCipherTextWithRandomIV($cipher, $secretyKey);
+echo 'decryptedString: ' . $plainText . PHP_EOL;
+```
+
 ### Output
 ```
 encryptedString ___Cipher Text will be generated here___
