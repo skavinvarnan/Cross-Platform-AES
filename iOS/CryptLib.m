@@ -208,7 +208,7 @@
     uint8_t digest[CC_SHA256_DIGEST_LENGTH]={0};
     CC_SHA256(keyData.bytes, (CC_LONG)keyData.length, digest);
     NSData *out=[NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
-    NSString *hash=[out description];
+    NSString *hash=[out debugDescription];
     hash = [hash stringByReplacingOccurrencesOfString:@" " withString:@""];
     hash = [hash stringByReplacingOccurrencesOfString:@"<" withString:@""];
     hash = [hash stringByReplacingOccurrencesOfString:@">" withString:@""];
